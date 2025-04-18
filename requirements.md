@@ -18,8 +18,10 @@
 <using the syntax [](images/ui1.png) add images in a folder called images/ and place sketches of your webpages>
 
 ## Non-functional Requirements
-1. non-functional
-2. non-functional
+1. The system shall securely store user passwords using encryption and follow standard authentication best practices.
+
+2. The system shall respond to user actions such as login, recipe creation, and search within 2 seconds under normal usage.
+
 
 <each of the 14 requirements will have a use case associated with it>
 ## Use Cases <Add name of who will write (this specific requirement) and implement (in subsequent milestones) the use case below>
