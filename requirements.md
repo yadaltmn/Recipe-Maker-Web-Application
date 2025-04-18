@@ -2,18 +2,18 @@
 1. The system shall allow a cistor to register by providing a username, email, and password.
 2. The system shall allow a registered user log in usig email and password.
 3. The system shall allow a logged-in user to securely log out of their account.
-4. 
-5. requirement
-6. requirement
-7. requirement
-8. requirement
-9. requirement
-10. requirement
-11. requirement
-12. requirement
-13. requirement
-14. requirement
-15.
+4. The system shall allow logged-in users to create new recipes with a title, description, ingredients, and instructions.
+5. The system shall allow users to edit their own recipes.
+6. The system shall allow users to delete their own recipes.
+7. The system shall display full recipe details, including ingredients and instructions, to any visitor or user.
+8. The system shall provide a search feature for users to find recipes by title or ingredient.
+9. The system shall allow users to rate recipes from 1 to 5 stars.
+10. The system shall allow users to post comments on recipes.
+11. The system shall allow users to view their profile, including all submitted recipes.
+12. The system shall allow users to update their display name, email, or password.
+13. The system shall allow users to save or favorite recipes for future access.
+14. The system shall display all available recipes on the homepage or main recipe list.
+15. The system shall allow users to filter recipes based on tags such as 'vegan', 'dessert', and more.
 
 <using the syntax [](images/ui1.png) add images in a folder called images/ and place sketches of your webpages>
 
