@@ -1,6 +1,6 @@
 ## Functional Requirements
-1. The system shall allow a cistor to register by providing a username, email, and password.
-2. The system shall allow a registered user log in usig email and password.
+1. The system shall allow a visitor to register by providing a username, email, and password.
+2. The system shall allow a registered user log in using email and password.
 3. The system shall allow a logged-in user to securely log out of their account.
 4. The system shall allow logged-in users to create new recipes with a title, description, ingredients, and instructions.
 5. The system shall allow users to edit their own recipes.
@@ -161,7 +161,7 @@ Implementer: Chloe Knott
     Post-condition: Recipes matching the selected filter are displayed.
     Description: The user selects a filter (e.g., vegan, dessert). The system refreshes the list to show only matching recipes.
 
-- **Trigger:** <can be a list or short description>
+- **Trigger:** 
 1. User Registration – A visitor clicks on the 'Sign Up' or 'Register' button.
 2. User Login – A user navigates to the login page and submits the login form.
 3. User Logout – The user clicks the 'Logout' button.
@@ -179,30 +179,367 @@ Implementer: Chloe Knott
 15. Filter Recipes – A user selects a filter option (e.g., 'vegan') from the filter menu.
 
 - **Primary Sequence:**
-1. Ut enim ad minim veniam, quis nostrum e
-2. Et sequi incidunt
-3. Quis aute iure reprehenderit
-4. ...
-5. ...
-6. ...
-7. ...
-8. ...
-9. ...
-10. <Try to stick to a max of 12 steps>
+1. User Registration:
+
+    1. Visitor navigates to the registration page.
+
+    2.  Visitor enters a username, email, and password.
+
+    3. System validates the input fields.
+
+    4. System checks if the email/username is unique.
+
+    5. System encrypts the password.
+
+    6. System creates a new user record in the database.
+
+    7. System displays a success message or redirects to the login page.
+
+2. User Login: 
+
+    1. User navigates to the login page.
+
+    2. User enters email and password.
+
+    3. System validates credentials.
+
+    4. If valid, system creates a session for the user.
+
+    5. System redirects the user to the dashboard or homepage.2.
+
+3. User Logout: 
+
+    1.  User clicks the logout button.
+
+    2. System terminates the user's session.
+
+    3. System redirects user to the homepage or login screen
+
+4. Create Recipe: 
+
+    1. User navigates to the create recipe page.
+
+    2. User enters recipe details (title, description, ingredients, instructions).
+
+    3. System validates the input.
+
+    4. System saves the new recipe in the database.
+
+    5. System displays the new recipe or a success message.
+
+5. Edit Recipe:
+
+    1. User navigates to their list of recipes.
+
+    2. User selects a recipe to edit.
+
+    3. System loads the current recipe details into an editable form.
+
+    4. User updates one or more fields (title, description, ingredients, instructions).
+
+    5. User submits the changes.
+
+    6. System validates the updated input.
+
+    7. System updates the recipe in the database.
+
+    8. System displays the updated recipe or a success message.
+
+6. Delete Recipe:
+
+    1. User navigates to their list of recipes.
+
+    2. User selects a recipe to delete.
+
+    3. System prompts the user to confirm the deletion.
+
+    4. User confirms the deletion.
+
+    5. System deletes the recipe from the database.
+
+    6. System updates the recipe list and displays a success message.
+
+7. View Recipe:
+
+    1. User browses or searches for recipes.
+
+    2. User selects a recipe to view.
+
+    3. System retrieves the recipe details from the database.
+
+    4. System displays the recipe details, including ingredients and instructions.
+
+8. Search Recipe:
+
+    1. User navigates to the search bar.
+
+    2. User enters a keyword or phrase (e.g., title or ingredient).
+
+    3. User submits the search query.
+
+    4. System searches the database for matching recipes.
+
+    5. System displays a list of recipes that match the search criteria.
+
+9. Rate Recipe:
+
+    1. User views a specific recipe.
+
+    2. User selects a star rating (1 to 5 stars).
+
+    3. System records the user’s rating for the recipe.
+
+    4. System updates the recipe’s average rating.
+
+    5. System displays the updated average rating.
+
+10. Comment on Recipe:
+
+    1. User views a specific recipe.
+
+    2. User enters a comment in the comment field.
+
+    3. User submits the comment.
+
+    4. System validates and saves the comment, associating it with the recipe and user.
+
+    5. System displays the new comment below the recipe.
+
+11. View User Profile:
+
+    1. User navigates to their profile page.
+
+    2. System retrieves the user’s profile information and submitted recipes from the database.
+
+    3. System displays the profile information and a list of the user’s recipes.
+
+12. Edit User Profile:
+
+    1. User navigates to the profile edit page.
+
+    2. System loads the current profile information into an editable form.
+
+    3. User updates their display name, email, or password.
+
+    4. User submits the changes.
+
+    5. System validates the input and updates the user’s information in the database.
+
+    6. System displays a success message or the updated profile.
+
+13. Save Recipe (Favorites):
+
+    1. User views a recipe they want to save.
+
+    2. User clicks the ‘Save’ or ‘Favorite’ button.
+
+    3. System adds the recipe to the user’s list of saved recipes in the database.
+
+    4. System provides visual feedback (e.g., highlighted icon).
+
+    5. User can access saved recipes from their profile or favorites page.
+
+14. View All Recipes:
+
+    1. User navigates to the homepage or main recipe list.
+
+    2. System retrieves all recipes from the database.
+
+    3. System displays a list or grid of all available recipes, possibly with pagination.
+
+15. Filter Recipes:
+
+    1. User navigates to the recipe list or homepage.
+
+    2. User selects one or more filter options (e.g., tags like 'vegan', 'dessert').
+
+    3.  System filters the recipes based on the selected tags.
+
+    4. System displays only the recipes that match the selected filters
 
 
-- **Primary Postconditions:** <can be a list or short description>
-1. 
+- **Primary Postconditions:** 
+
+1. User Registration:
+
+    New user account is created and securely stored in the database.
+
+    User is either logged in or redirected to the login page.
+
+2. User Login:
+
+    User is authenticated and has an active session.
+
+3. User Logout:
+
+    User session is terminated and user is logged out.
+
+4. Create Recipe:
+
+    New recipe is saved and displayed in the recipe list.
+
+5. Edit Recipe:
+
+    Recipe details are updated and saved in the database.
+
+6. Delete Recipe:
+
+     removed from the system and no longer visible in user lists.
+
+7. View Recipe:
+
+    Recipe details are displayed to the user.
+
+8. Search Recipe:
+
+    List of recipes matching the search criteria is displayed.
+
+9. Rate Recipe:
+
+    User’s rating is saved and recipe’s average rating is updated.
+
+10. Comment on Recipe:
+
+    Comment is saved and displayed under the recipe.
+
+11. View User Profile:
+
+    User’s profile information and submitted recipes are displayed.
+
+12. Edit User Profile:
+
+    User’s profile information is updated and saved.
+
+13. Save Recipe (Favorites):
+
+    Recipe is added to the user’s list of saved/favorite recipes.
+
+14. View All Recipes:
+
+    All available recipes are displayed to the user.
+
+15. Filter Recipes:
+
+    Only recipes matching the selected filters are displayed.
 
 
-- **Alternate Sequence:** <you can have more than one alternate sequence to describe multiple issues that may arise and their outcomes>
-1. Ut enim ad minim veniam, quis nostrum e
-2. Ut enim ad minim veniam, quis nostrum e
-3. ...
+
+- **Alternate Sequence:** 
+1. User Registration:
+
+    User enters invalid email or weak password.
+
+    System displays an error and prompts for correction.
+
+    User attempts to register with an existing email/username.
+
+    System displays a duplicate account error.
+
+- **Alternate Sequence:** 
+2. User Login:
+
+    User enters incorrect credentials.
+
+    System displays an error message and prompts to retry.
+
+    User account is locked after repeated failed attempts (if applicable).
+
+- **Alternate Sequence:** 
+3. User Logout:
+
+    Session termination fails due to server error.
+
+    System displays an error message; user remains logged in.
+
+ **Alternate Sequence:** 
+4. Create Recipe:
+
+    User submits incomplete or invalid data.
+
+    System displays validation errors and prompts for correction.
+
+    Database error occurs; system displays a failure message.
+
+ **Alternate Sequence:** 
+5. Edit Recipe:
+
+    User tries to edit a recipe they do not own.
+
+    System denies access and displays an error.
+
+    User submits invalid data; system prompts for correction.
+
+ **Alternate Sequence:** 
+6. Delete Recipe:
+
+    User cancels the deletion; recipe remains unchanged.
+
+    User tries to delete a recipe they do not own; system denies access.
+
+    Database error occurs; system displays a failure message.
+
+ **Alternate Sequence:** 
+7. View Recipe:
+
+    Recipe does not exist (deleted or broken link).
+
+    System shows a "Recipe not found" error.
+ 
+ **Alternate Sequence:** 
+8. Search Recipe:
+
+    No recipes match the search criteria; system displays a "No results found" message.
+
+    User enters invalid search input; system prompts for correction.
+
+ **Alternate Sequence:** 
+9. Rate Recipe:
+
+    User tries to rate the same recipe multiple times; system prevents duplicate ratings.
+
+    Database error occurs; system displays a failure message.
+
+ **Alternate Sequence:** 
+10. Comment on Recipe:
+
+    User submits an empty or invalid comment; system prompts for correction.
+
+    Comment fails to save due to a system error; system displays a failure message.
+
+ **Alternate Sequence:** 
+11. View User Profile:
+
+    User profile does not exist; system shows an error message.
+
+    Database error occurs; system displays a failure message.
+
+**Alternate Sequence:** 
+12. Edit User Profile:
+
+    User submits invalid data (e.g., email already in use); system prompts for correction.
+
+    Database error occurs; system displays a failure message.
+
+ **Alternate Sequence:** 
+13. Save Recipe (Favorites):
+
+    User tries to save a recipe already in favorites; system prevents duplicate saves.
+
+    Database error occurs; system displays a failure message.
+ 
+ **Alternate Sequence:** 
+14. View All Recipes:
+
+    No recipes exist in the database; system displays a "No recipes available" message.
+
+    Database error occurs; system displays a failure message.
+ 
+ **Alternate Sequence:** 
+15. Filter Recipes:
+
+    No recipes match the selected filters; system displays a "No results found" message.
+
+    User selects invalid or conflicting filters; system prompts for correction.
 
 
-- **Alternate Sequence <optional>:** <you can have more than one alternate sequence to describe multiple issues that may arise>
-1. Ut enim ad minim veniam, quis nostrum e
-2. Ut enim ad minim veniam, quis nostrum e
-3. ...
 
