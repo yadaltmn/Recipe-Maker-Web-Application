@@ -9,11 +9,15 @@ Instructions:
 
 Libraries needed:
 Run these commands:
+```
     pip install flask
     pip Install 'email_validator'
+```
 
 To start the program, run "python3 run.py"
+
 Different pages you can navigate to:
-http://127.0.0.1:5000/ (This is the home page)
-http://127.0.0.1:5000/login (This is the login page)
-http://127.0.0.1:5000/registration (This is the registration page)
+
+- http://127.0.0.1:5000/ (This is the home page)
+- http://127.0.0.1:5000/login (This is the login page)
+- http://127.0.0.1:5000/registration (This is the registration page)
