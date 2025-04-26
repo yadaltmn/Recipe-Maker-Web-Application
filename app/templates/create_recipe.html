@@ -1,0 +1,21 @@
+<h1>Create New Recipe</h1>
+
+<!-- Start of the form -->
+<form method="POST">
+  {{ form.hidden_tag() }} <!-- Hidden CSRF protection field -->
+
+  <!-- Title input field -->
+  <p>{{ form.title.label }}<br>{{ form.title() }}</p>
+
+  <!-- Description input field -->
+  <p>{{ form.description.label }}<br>{{ form.description() }}</p>
+
+  <!-- Ingredients input field -->
+  <p>{{ form.ingredients.label }}<br>{{ form.ingredients() }}</p>
+
+  <!-- Instructions input field -->
+  <p>{{ form.instructions.label }}<br>{{ form.instructions() }}</p>
+
+  <!-- Submit button -->
+  <p>{{ form.submit() }}</p>
+</form>

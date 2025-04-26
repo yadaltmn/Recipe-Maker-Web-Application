@@ -11,6 +11,10 @@ from app import db
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import redirect, url_for
+# Import Recipe model and RecipeForm
+from app.models import Recipe
+from app.forms import RecipeForm
+from flask_login import login_required
 # from <X> import <Y>
 
 @myapp_obj.route("/")
@@ -80,6 +84,30 @@ def logout():
     login_manager = LoginManager()
     login_manager.init_app(app)  # <-- This line connects Flask-Login to your 
     return redirect(url_for("login")) 
+
+# Route for creating a new recipe
+@myapp_obj.route("/create-recipe", methods=['GET', 'POST'])
+@login_required  # Only allow logged-in users to access this page
+def create_recipe():
+    form = RecipeForm()  # Initialize the recipe form
+
+    if form.validate_on_submit():  # Check if the form was submitted correctly
+        # Create a new Recipe object using form data
+        recipe = Recipe(
+            title=form.title.data,  # Recipe title from form input
+            description=form.description.data,  # Recipe description
+            ingredients=form.ingredients.data,  # Ingredients from form
+            instructions=form.instructions.data,  # Instructions from form
+            username=current_user.username  # Store the username of the creator
+        )
+        db.session.add(recipe)  # Add the new recipe to the database session
+        db.session.commit()  # Commit/save the new recipe to the database
+        flash('Recipe created successfully!', 'success')  # Show a success message to user
+        return redirect(url_for('main'))  # Redirect to homepage after creation
+
+    # If GET request or form not valid, render the create recipe page again
+    return render_template("create_recipe.html", form=form)
+
 
 # @myapp_obj.route("/showall")
 # def posts():
