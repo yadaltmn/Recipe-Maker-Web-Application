@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -10,6 +11,10 @@ myapp_obj.config.from_mapping(
     SECRET_KEY = 'you-will-never-guess',
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db'),
 )
+# Setup login manager
+login_manager = LoginManager()
+login_manager.init_app(myapp_obj)
+login_manager.login_view = 'login'
 
 db = SQLAlchemy(myapp_obj)
 
