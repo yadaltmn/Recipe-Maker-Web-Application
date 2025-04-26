@@ -33,14 +33,17 @@ def users():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        print(f"Here is the input from the user {form.username.data} and {form.password.data}")
-        u = User(username=form.username.data, email=form.password.data)
-        db.session.add(u)
-        db.session.commit()
-        return redirect("/")
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            flash('Logged in successfully.', 'success')
+            return redirect(url_for('main'))
+        else:
+            flash('Invalid email or password', 'danger')
     else:
         print("MOOOO MOOO")
     return render_template("login.html", form=form)
+
     # What is render template returning?
     #return str(type(render_template("login.html", form=form)))
 
