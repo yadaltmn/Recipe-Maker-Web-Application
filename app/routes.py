@@ -7,6 +7,8 @@ from app.forms import PostForm
 from app.models import User
 from app.models import Post
 from app import db
+from flask import flash
+
 
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -22,8 +24,6 @@ from flask import abort  # Import abort to handle unauthorized deletes
 @myapp_obj.route("/")
 def main():
     return render_template("hello.html")
-
-
 
 @myapp_obj.route("/accounts")
 @login_required
@@ -54,7 +54,6 @@ def login():
     # What is render template returning?
     #return str(type(render_template("login.html", form=form)))
 
-@myapp_obj.route("/registration", methods=['GET', 'POST'])
 @myapp_obj.route("/registration", methods=['GET', 'POST'])
 def registration():
     form = RegistrationForm()
