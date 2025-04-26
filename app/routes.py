@@ -8,16 +8,18 @@ from app.models import User
 from app.models import Post
 from app import db
 
-from flask_login import logout_user
+from flask_login import login_user, logout_user, current_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import redirect, url_for
 # from <X> import <Y>
 
 @myapp_obj.route("/")
 def main():
-    name = "username"
-    return render_template("hello.html", name=name)
+    return render_template("hello.html", name=current_user.username if current_user.is_authenticated else "Guest")
+
 
 @myapp_obj.route("/accounts")
+@login_required
 def users():
     # user = 'Chloe Knott', 'chloeknott@sjsu.edu'
     users = User.query.all()
