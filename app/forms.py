@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, valid
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[validators.DataRequired()])
-    password = PasswordField('Password', validators=[validators.Length(min=4, max=35)])
+    password = PasswordField('Password', validators=[validators.Length(min=4, max=128)])
     submit =  SubmitField("Sign in")
     remember_me = BooleanField("Remember Me")    
 
@@ -14,5 +14,5 @@ class PostForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[validators.DataRequired()])
-    password = PasswordField('Password', validators=[validators.Length(min=4, max=35)])
+    password = PasswordField('Password', validators=[validators.Length(min=4, max=128)])
     submit =  SubmitField("Create account")
