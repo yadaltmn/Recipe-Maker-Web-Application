@@ -21,7 +21,8 @@ from flask import abort  # Import abort to handle unauthorized deletes
 
 @myapp_obj.route("/")
 def main():
-    return render_template("hello.html", name=current_user.username if current_user.is_authenticated else "Guest")
+    return render_template("hello.html")
+
 
 
 @myapp_obj.route("/accounts")
@@ -54,17 +55,21 @@ def login():
     #return str(type(render_template("login.html", form=form)))
 
 @myapp_obj.route("/registration", methods=['GET', 'POST'])
+@myapp_obj.route("/registration", methods=['GET', 'POST'])
 def registration():
     form = RegistrationForm()
     if form.validate_on_submit():
-        print(f"Here is the input from the user {form.username.data} and {form.password.data}")
-        u = User(username=form.username.data, email=form.password.data)
+        hashed_password = generate_password_hash(form.password.data)
+        u = User(
+            username=form.username.data,
+            email=form.email.data,
+            password=hashed_password  # ✅ save hash into correct field
+        )
         db.session.add(u)
         db.session.commit()
-        return redirect("/")
-    else:
-        print("MOOOO MOOO")
+        return redirect("/login")  # Redirect to login instead of /
     return render_template("registration.html", form=form)
+
 
 @myapp_obj.route("/showall", methods=['GET', 'POST'])
 def createPost():
@@ -82,10 +87,8 @@ def createPost():
 
 @myapp_obj.route('/logout')
 def logout():
-    logout_user()  # Logs out the user
-    login_manager = LoginManager()
-    login_manager.init_app(app)  # <-- This line connects Flask-Login to your 
-    return redirect(url_for("login")) 
+    logout_user()
+    return redirect(url_for("login"))
 
 # Route for creating a new recipe
 @myapp_obj.route("/create-recipe", methods=['GET', 'POST'])
@@ -109,6 +112,13 @@ def create_recipe():
 
     # If GET request or form not valid, render the create recipe page again
     return render_template("create_recipe.html", form=form)
+
+@myapp_obj.route("/recipes")
+@login_required
+def recipes():
+    all_recipes = Recipe.query.all()
+    return render_template("recipes.html", recipes=all_recipes)
+
 
 @myapp_obj.route('/delete-recipe/<int:recipe_id>', methods=['POST'])
 @login_required

@@ -14,8 +14,10 @@ class PostForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[validators.DataRequired()])
-    password = PasswordField('Password', validators=[validators.Length(min=4, max=128)])
-    submit =  SubmitField("Create account")
+    email = StringField('Email', validators=[validators.Email()])
+    password = PasswordField('Password', validators=[validators.Length(min=4, max=35)])
+    submit = SubmitField("Create account")
+
 
 # Form for creating a new recipe
 class RecipeForm(FlaskForm):
