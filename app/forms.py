@@ -2,10 +2,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, validators
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[validators.DataRequired()])
-    password = PasswordField('Password', validators=[validators.Length(min=4, max=128)])
-    submit =  SubmitField("Sign in")
-    remember_me = BooleanField("Remember Me")    
+    email = StringField('Email', validators=[validators.DataRequired(), validators.Email()])
+    password = PasswordField('Password', validators=[validators.Length(min=4, max=35)])
+    remember_me = BooleanField("Remember Me")
+    submit = SubmitField("Sign In")
+  
 
 class PostForm(FlaskForm):
     username = StringField('Username', validators=[validators.DataRequired()])
