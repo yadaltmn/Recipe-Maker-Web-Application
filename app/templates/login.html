@@ -6,14 +6,15 @@
     <h1>Sign In</h1>
     <form action="" method="POST" novalidate>
         {{form.hidden_tag()}}
-        <p> {{ form.username.label }}<br>
-            {{ form.username() }}</p>
+        <p> {{ form.email.label }}<br>
+            {{ form.email() }}</p>
             
 
         <p>{{form.password.label}}</br>
         <p>{{form.password()}}</p>
 
         <p>{{form.submit()}}</p>
+        
         <p style="display: flex; align-items: center;">
             {{ form.remember_me() }} {{ form.remember_me.label }}
         </p>

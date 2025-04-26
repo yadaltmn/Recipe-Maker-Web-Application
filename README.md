@@ -4,3 +4,16 @@
 
 Ethical Considerations:
 Ethical considerations for building a recipe-based website include legality issues, data privacy, algorithm fairness, environmental considerations, and economic and social considerations. It is important that when we select content to share on our website, we do not infringe on creative licenses and that we do not plagiarize. Recipes themselves are not protected under copyright laws, but any creativity within that space is. It is important that we give credit where credit is due to ensure we create an ethical website. Data privacy is an important consideration, and it is our responsibility to include transparent data policies and ensure personal data is encrypted. Algorithm fairness is another important factor to consider. We should ensure that we remove any biases from our recipe suggestions and that we do not marginalize ethnic recipes. We should also ensure that any recipes we do include from different cultures are authentic and accurately reflect that cultures’ cuisine. Environmentally, we should select efficient data centers to reduce our carbon footprint. Some economic and social considerations include highlighting affordable ingredients that are accessible to the local population. 
+
+Instructions:
+
+Libraries needed:
+Run these commands:
+    pip install flask
+    pip Install 'email_validator'
+
+To start the program, run "python3 run.py"
+Different pages you can navigate to:
+http://127.0.0.1:5000/ (This is the home page)
+http://127.0.0.1:5000/login (This is the login page)
+http://127.0.0.1:5000/registration (This is the registration page)
