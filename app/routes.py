@@ -15,6 +15,8 @@ from flask import redirect, url_for
 from app.models import Recipe
 from app.forms import RecipeForm
 from flask_login import login_required
+
+from flask import abort  # Import abort to handle unauthorized deletes
 # from <X> import <Y>
 
 @myapp_obj.route("/")
@@ -108,6 +110,19 @@ def create_recipe():
     # If GET request or form not valid, render the create recipe page again
     return render_template("create_recipe.html", form=form)
 
+@myapp_obj.route('/delete-recipe/<int:recipe_id>', methods=['POST'])
+@login_required
+def delete_recipe(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)  # Get the recipe or 404 error if not found
+
+    # Check if the current user owns the recipe
+    if recipe.username != current_user.username:
+        abort(403)  # Forbidden error if not the owner
+
+    db.session.delete(recipe)  # Delete the recipe
+    db.session.commit()  # Save the change to the database
+    flash('Recipe has been deleted.', 'info')  # Show a message
+    return redirect(url_for('main'))  # Redirect to homepage after deletion
 
 # @myapp_obj.route("/showall")
 # def posts():
