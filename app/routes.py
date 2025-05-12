@@ -133,6 +133,62 @@ def delete_recipe(recipe_id):
     flash('Recipe has been deleted.', 'info')  # Show a message
     return redirect(url_for('main'))  # Redirect to homepage after deletion
 
+# Route for searching recipes by title or ingredient
+@myapp_obj.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('q')  # Get search term from query string (?q=...)
+    if query:
+        # Filter recipes whose title or ingredients contain the query (case-insensitive)
+        results = Recipe.query.filter(
+            Recipe.title.ilike(f"%{query}%") | 
+            Recipe.ingredients.ilike(f"%{query}%")
+        ).all()
+    else:
+        results = []  # No search term provided
+    # Reuse recipes.html to display results
+    return render_template("recipes.html", recipes=results)
+
+# Route to view a recipe's details and submit comments
+@myapp_obj.route("/recipe/<int:recipe_id>", methods=["GET", "POST"])
+def recipe_detail(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)  # Fetch the recipe or show 404
+    form = CommentForm()  # Create a comment form instance
+
+    # When user submits a comment
+    if form.validate_on_submit():
+        comment = Comment(
+            content=form.content.data,
+            recipe_id=recipe.id,
+            username=current_user.username  # Associate comment with current user
+        )
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for("recipe_detail", recipe_id=recipe.id))  # Refresh the page
+
+    comments = Comment.query.filter_by(recipe_id=recipe.id).all()  # Load all comments for this recipe
+    return render_template("recipe_detail.html", recipe=recipe, comments=comments, form=form)
+
+# Route for editing the currently logged-in user's profile
+@myapp_obj.route("/edit-profile", methods=["GET", "POST"])
+@login_required
+def edit_profile():
+    # Pre-fill the form with the current user's data
+    form = RegistrationForm(obj=current_user)
+
+    # If the user submits the form with valid data
+    if form.validate_on_submit():
+        # Update user fields
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.password = generate_password_hash(form.password.data)  # Securely hash new password
+
+        db.session.commit()  # Save changes to the database
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for("main"))  # Redirect to home
+
+    return render_template("edit_profile.html", form=form)  # Show the form again
+
+
 # @myapp_obj.route("/showall")
 # def posts():
 #     post = Post.query.all()

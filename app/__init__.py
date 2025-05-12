@@ -20,13 +20,13 @@ login_manager = LoginManager()
 login_manager.init_app(myapp_obj)
 login_manager.login_view = 'login'
 
-# ✅ Import AFTER defining login_manager
+# Import AFTER defining login_manager
 from app.models import User
 
-# ✅ This is REQUIRED for Flask-Login to work
+# This is REQUIRED for Flask-Login to work
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# ✅ This should come LAST
+# This should come LAST
 from app import routes, models
