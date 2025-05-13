@@ -8,11 +8,20 @@
     <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
     <p><em>Posted by: {{ recipe.username }}</em></p>
 
+    <!-- View details as a link -->
+    <div>
+      <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" style="color: #007bff; text-decoration: underline;">
+        View details
+      </a>
+    </div>
+
     {% if current_user.is_authenticated and recipe.username == current_user.username %}
       <!-- Only show delete button if logged-in user is the recipe creator -->
-      <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
-        <button type="submit">Delete</button>
-      </form>
+      <div style="margin-top: 8px;">
+        <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
+          <button type="submit">Delete</button>
+        </form>
+      </div>
     {% endif %}
   </div>
 {% endfor %}

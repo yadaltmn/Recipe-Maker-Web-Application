@@ -26,3 +26,8 @@ class RecipeForm(FlaskForm):
     instructions = StringField('Instructions', validators=[DataRequired()])
     submit = SubmitField("Create Recipe")
 
+
+class CommentForm(FlaskForm):
+    content = StringField('Comment', validators=[DataRequired()])
+    submit = SubmitField("Submit Comment")
+

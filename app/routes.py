@@ -1,7 +1,7 @@
 from app import myapp_obj, db
 from flask import render_template, redirect, url_for, flash
-from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm
-from app.models import User, Post, Recipe
+from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm, CommentForm
+from app.models import User, Post, Recipe, Comment
 
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
