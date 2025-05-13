@@ -20,6 +20,13 @@
     </div>
   </nav>
 
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% set category, message = messages[-1] %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endif %}
+  {% endwith %}
+
   <!-- Signup Box -->
   <div class="auth-box">
     <div class="auth-tabs">
