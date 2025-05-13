@@ -1,21 +1,46 @@
-<h1>Create New Recipe</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create a Recipe – Crave Cove</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="crave-bg">
+  <!-- Navbar -->
+  <nav class="nav-bar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Crave Cove Logo" class="logo-img">
+      <span class="brand-title">Crave Cove</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/recipes">Recipes</a>
+      <a href="/create">Create</a>
+      <a href="/profile">Profile</a>
+    </div>
+  </nav>
 
-<!-- Start of the form -->
-<form method="POST">
-  {{ form.hidden_tag() }} <!-- Hidden CSRF protection field -->
+  <!-- Create Recipe Box -->
+  <div class="auth-box">
+    <h2 style="text-align: center; margin-bottom: 20px;">Create New Recipe</h2>
 
-  <!-- Title input field -->
-  <p>{{ form.title.label }}<br>{{ form.title() }}</p>
+    <form method="POST">
+      {{ form.hidden_tag() }}
 
-  <!-- Description input field -->
-  <p>{{ form.description.label }}<br>{{ form.description() }}</p>
+      <label>{{ form.title.label }}</label>
+      {{ form.title(class="input-field") }}
 
-  <!-- Ingredients input field -->
-  <p>{{ form.ingredients.label }}<br>{{ form.ingredients() }}</p>
+      <label>{{ form.description.label }}</label>
+      {{ form.description(class="input-field") }}
 
-  <!-- Instructions input field -->
-  <p>{{ form.instructions.label }}<br>{{ form.instructions() }}</p>
+      <label>{{ form.ingredients.label }}</label>
+      {{ form.ingredients(class="input-field") }}
 
-  <!-- Submit button -->
-  <p>{{ form.submit() }}</p>
-</form>
+      <label>{{ form.instructions.label }}</label>
+      {{ form.instructions(class="input-field") }}
+
+      {{ form.submit(class="submit-btn") }}
+    </form>
+  </div>
+</body>
+</html>
