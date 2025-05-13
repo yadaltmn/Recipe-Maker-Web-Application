@@ -32,3 +32,9 @@ class Recipe(db.Model):
     instructions = db.Column(db.Text, nullable=False)  # Instructions to prepare the recipe
     username = db.Column(db.String(32))  # Username of the creator (optional)
 
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    recipe_id = db.Column(db.String(32), nullable=False)
+    username = db.Column(db.String(32), nullable=False)

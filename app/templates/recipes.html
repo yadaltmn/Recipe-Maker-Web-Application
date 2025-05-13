@@ -36,6 +36,21 @@
             <h3>{{ recipe.title }}</h3>
             <p>{{ recipe.description }}</p>
           </div>
+          <!-- View details as a link -->
+          <div>
+            <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" style="color: #007bff; text-decoration: underline;">
+              View details
+            </a>
+          </div>
+
+          {% if current_user.is_authenticated and recipe.username == current_user.username %}
+            <!-- Only show delete button if logged-in user is the recipe creator -->
+            <div style="margin-top: 8px;">
+              <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
+                <button type="submit">Delete</button>
+              </form>
+            </div>
+          {% endif %}
         </div>
       {% endfor %}
     {% else %}
