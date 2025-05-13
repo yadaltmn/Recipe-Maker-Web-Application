@@ -107,8 +107,7 @@ def create_recipe():
     return render_template("create_recipe.html", form=form)
 
 @myapp_obj.route("/recipes")
-@login_required
-def recipes():
+def recipes():  
     all_recipes = Recipe.query.all()
     return render_template("recipes.html", recipes=all_recipes)
 

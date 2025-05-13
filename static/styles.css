@@ -115,3 +115,96 @@ body.crave-bg {
     font-weight: bold;
     text-align: center;
   }
+
+/* Recipe Section Layout */
+/* Header */
+.recipe-header {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.recipe-header h1 {
+  font-size: 2rem;
+  color: #1f3c88;
+}
+
+/* Create Recipe Button */
+.create-recipe-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #1f3c88;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background 0.2s ease;
+}
+
+.create-recipe-btn:hover {
+  background-color: #142a61;
+}
+
+/* No Recipes Message */
+.no-recipes {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  color: #333;
+}
+
+/* Recipe Grid */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Individual Card */
+.recipe-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Image */
+.recipe-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* Text Body */
+.recipe-body {
+  padding: 1rem 1.25rem;
+}
+
+.recipe-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #1f3c88;
+  margin: 0.25rem 0;
+}
+
+.recipe-desc {
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.recipe-meta {
+  font-size: 0.8rem;
+  color: #888;
+}

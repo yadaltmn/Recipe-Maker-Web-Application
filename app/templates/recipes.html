@@ -1,18 +1,46 @@
-<h1>All Recipes</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recipes - Crave Cove</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="crave-bg">
+  <!-- Navbar -->
+  <nav class="nav-bar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Crave Cove Logo" class="logo-img">
+      <span class="brand-title">Crave Cove</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/recipes">Recipes</a>
+      <a href="/favorites">Favorites</a>
+      <a href="/profile">Profile</a>
+    </div>
+  </nav>
 
-{% for recipe in recipes %}
-  <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
-    <h2>{{ recipe.title }}</h2>
-    <p><strong>Description:</strong> {{ recipe.description }}</p>
-    <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
-    <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
-    <p><em>Posted by: {{ recipe.username }}</em></p>
+  <!-- Recipes Header -->
+  <div class="recipe-header">
+    <h1 class="recipe-title">Recipes</h1>
+    <a href="/create-recipe" class="create-recipe-btn">+ Create Recipe</a>
+  </div>
 
-    {% if current_user.is_authenticated and recipe.username == current_user.username %}
-      <!-- Only show delete button if logged-in user is the recipe creator -->
-      <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
-        <button type="submit">Delete</button>
-      </form>
+  <!-- Recipes List -->
+  <div class="recipe-grid">
+    {% if recipes %}
+      {% for recipe in recipes %}
+        <div class="recipe-card">
+          <img src="{{ url_for('static', filename='images/recipes.png') }}" alt="{{ recipe.title }}">
+          <div class="recipe-content">
+            <h3>{{ recipe.title }}</h3>
+            <p>{{ recipe.description }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="no-recipes-msg">No recipes found.</p>
     {% endif %}
   </div>
-{% endfor %}
+</body>
+</html>
