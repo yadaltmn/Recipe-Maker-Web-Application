@@ -19,6 +19,12 @@
       <a href="/profile">Profile</a>
     </div>
   </nav>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% set category, message = messages[-1] %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endif %}
+  {% endwith %}
 
   <!-- Login Form -->
   <div class="auth-box">
