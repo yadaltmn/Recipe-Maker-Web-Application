@@ -4,7 +4,7 @@ from flask_login import LoginManager
 import os
 
 # Create app
-myapp_obj = Flask(__name__)
+myapp_obj = Flask(__name__, static_folder='../static')
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Config setup

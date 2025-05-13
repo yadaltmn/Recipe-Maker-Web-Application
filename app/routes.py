@@ -1,22 +1,12 @@
-from app import myapp_obj
-from flask import render_template
-from flask import redirect
-from app.forms import LoginForm
-from app.forms import RegistrationForm
-from app.forms import PostForm
-from app.models import User
-from app.models import Post
-from app import db
-from flask import flash
-
+from app import myapp_obj, db
+from flask import render_template, redirect, url_for, flash
+from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm
+from app.models import User, Post, Recipe
 
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import redirect, url_for
-# Import Recipe model and RecipeForm
-from app.models import Recipe
-from app.forms import RecipeForm
-from flask_login import login_required
+from flask_wtf import FlaskForm
+from flask import abort
 
 from flask import abort  # Import abort to handle unauthorized deletes
 # from <X> import <Y>
@@ -36,37 +26,41 @@ def users():
     #return "\n".join([header] + usernames)
 
 
-@myapp_obj.route("/login", methods=['GET', 'POST'])
+@myapp_obj.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
+
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
+
         if user and check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember_me.data)
-            flash('Logged in successfully.', 'success')
-            return redirect(url_for('main'))
+            flash(f'Welcome, {user.username}!', 'success')  # ✅ moved inside
+            return redirect(url_for('home'))  # replace with your actual home route name
         else:
-            flash('Invalid email or password', 'danger')
-    else:
-        print("MOOOO MOOO")
+            flash('Invalid username or password.', 'danger')
+
     return render_template("login.html", form=form)
+
 
     # What is render template returning?
     #return str(type(render_template("login.html", form=form)))
 
-@myapp_obj.route("/registration", methods=['GET', 'POST'])
+@myapp_obj.route("/registration", methods=["GET", "POST"])
 def registration():
     form = RegistrationForm()
+    
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
-        u = User(
-            username=form.username.data,
-            email=form.email.data,
-            password=hashed_password  # ✅ save hash into correct field
-        )
-        db.session.add(u)
+        new_user = User(username=form.username.data, password=hashed_password)
+        
+        db.session.add(new_user)
         db.session.commit()
-        return redirect("/login")  # Redirect to login instead of /
+        
+        login_user(new_user)  # Auto-login after registration
+        flash(f'Welcome, {new_user.username}!', 'success')  # moved inside block
+        return redirect(url_for('home'))  # Redirect to homepage
+    
     return render_template("registration.html", form=form)
 
 
@@ -188,6 +182,14 @@ def edit_profile():
 
     return render_template("edit_profile.html", form=form)  # Show the form again
 
+@myapp_obj.route("/test-logo")
+def test_logo():
+    return render_template("test_logo.html")
+
+
+@myapp_obj.route("/")
+def home():
+    return render_template("homepage.html", user=current_user)
 
 # @myapp_obj.route("/showall")
 # def posts():

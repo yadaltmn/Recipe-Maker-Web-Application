@@ -1,30 +1,29 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, validators
+from wtforms import StringField, PasswordField, TextAreaField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, Length, Email
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[validators.DataRequired(), validators.Email()])
-    password = PasswordField('Password', validators=[validators.Length(min=4, max=35)])
-    remember_me = BooleanField("Remember Me")
-    submit = SubmitField("Sign In")
-  
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')  # matches form.remember_me
+    submit = SubmitField('Login')
+
 
 class PostForm(FlaskForm):
-    username = StringField('Username', validators=[validators.DataRequired()])
-    body = StringField('Body of Post', validators=[validators.Length(min=4, max=35)])
-    submit =  SubmitField("Post")
+    username = StringField('Username', validators=[DataRequired()])
+    body = StringField('Body of Post', validators=[Length(min=4, max=35)])
+    submit = SubmitField("Post")
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[validators.DataRequired()])
-    email = StringField('Email', validators=[validators.Email()])
-    password = PasswordField('Password', validators=[validators.Length(min=4, max=35)])
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[Email()])
+    password = PasswordField('Password', validators=[Length(min=4, max=35)])
     submit = SubmitField("Create account")
 
-
-# Form for creating a new recipe
 class RecipeForm(FlaskForm):
-    title = StringField('Title', validators=[validators.DataRequired()])  # Input for recipe title
-    description = StringField('Description', validators=[validators.DataRequired()])  # Short description
-    ingredients = StringField('Ingredients', validators=[validators.DataRequired()])  # List of ingredients
-    instructions = StringField('Instructions', validators=[validators.DataRequired()])  # Steps to prepare
-    submit = SubmitField("Create Recipe")  # Button to submit the form
+    title = StringField('Title', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    ingredients = StringField('Ingredients', validators=[DataRequired()])
+    instructions = StringField('Instructions', validators=[DataRequired()])
+    submit = SubmitField("Create Recipe")
 

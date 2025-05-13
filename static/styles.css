@@ -1,0 +1,117 @@
+body.crave-bg {
+    background: linear-gradient(to right, #fef3c7, #e0f2fe);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-bar {
+    background: #1e3a8a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+  }
+
+  .nav-user {
+    color: #fcd34d;
+    font-weight: bold;
+    margin-left: 20px;
+  }
+  
+  .nav-logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-img {
+    height: 40px;     /*  Reduce from previous size */
+    margin-right: 10px;
+  }
+  
+  .brand-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fcd34d;    /* Yellow */
+  }
+  
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+  }
+  
+  .auth-box {
+    max-width: 400px;
+    background: white;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  }
+  
+  .auth-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-radius: 9999px;
+    overflow: hidden;
+    background: #e5e7eb;
+  }
+  
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    background: #e5e7eb;
+    color: #000;
+  }
+  
+  .tab.active {
+    background: #fde68a;
+  }
+  
+  .input-field {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #f1f5f9;
+  }
+  
+  .submit-btn {
+    background-color: #1e3a8a;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #3b82f6;
+  }
+  
+  .switch-link {
+    text-align: center;
+    font-size: 14px;
+  }
+  .flash.success {
+    background-color: #d1fae5;
+    color: #065f46;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+  }

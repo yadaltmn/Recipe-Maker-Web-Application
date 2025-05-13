@@ -1,19 +1,45 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Create New Account</title>
+  <meta charset="UTF-8">
+  <title>Crave Cove – Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
-    <h1>Create New Account</h1>
+<body class="crave-bg">
+  <!-- Top Navbar -->
+  <nav class="nav-bar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Crave Cove Logo" class="logo-img">
+      <span class="brand-title">Crave Cove</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/recipes">Recipes</a>
+      <a href="/favorites">Favorites</a>
+      <a href="/profile">Profile</a>
+    </div>
+  </nav>
+
+  <!-- Signup Box -->
+  <div class="auth-box">
+    <div class="auth-tabs">
+      <a href="/login" class="tab">Login</a>
+      <a href="/registration" class="tab active">Sign Up</a>
+    </div>
+
     <form method="POST">
-        {{ form.hidden_tag() }}
+      {{ form.hidden_tag() }}
 
-        <p>{{ form.username.label }}<br>
-        {{ form.username() }}</p>
+      <label>{{ form.username.label }}</label>
+      {{ form.username(class="input-field") }}
 
-        <p>{{ form.password.label }}<br>
-        {{ form.password() }}</p>
+      <label>{{ form.password.label }}</label>
+      {{ form.password(class="input-field") }}
 
-        <p>{{ form.submit() }}</p>
+      {{ form.submit(class="submit-btn") }}
+
+      <p class="switch-link">Already have an account? <a href="/login">Login</a></p>
     </form>
+  </div>
 </body>
 </html>

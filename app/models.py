@@ -7,7 +7,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32))
     password = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(64), unique=True, nullable=False)
+    
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
