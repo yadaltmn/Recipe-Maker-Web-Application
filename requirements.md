@@ -3,12 +3,12 @@
 2. The system shall allow a registered user log in using email and password.
 3. The system shall allow a logged-in user to securely log out of their account.
 4. The system shall allow logged-in users to create new recipes with a title, description, ingredients, and instructions.
-5. The system shall allow users to edit their own recipes.
+5. The system shall allow users to post comments on recipes.
 6. The system shall allow users to delete their own recipes.
 7. The system shall display full recipe details, including ingredients and instructions, to any visitor or user.
 8. The system shall provide a search feature for users to find recipes by title or ingredient.
 9. The system shall allow users to rate recipes from 1 to 5 stars.
-10. The system shall allow users to post comments on recipes.
+10. The system shall allow users to edit their own recipes.
 11. The system shall allow users to view their profile, including all submitted recipes.
 12. The system shall allow users to update their display name, email, or password.
 13. The system shall allow users to save or favorite recipes for future access.
