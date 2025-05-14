@@ -1,7 +1,6 @@
 # Recipe-Maker-Web-Application
 - Chloe Knott (chloeknott)
 - Jada-Lien Nguyen (yadaltmn)
-
 Instructions:
 
 Prerequisites: 
@@ -19,14 +18,25 @@ Installation Steps:
 2.Install Required Libraries
 
 `pip install -r requirements.txt`
-    
-3.Set-up Database
-`python3 setup-db.py`
 
-4.Run the Application (Launches the Flask Server)
-`python3 run.py `
+3.Set up Virtual Environment
 
-5.Access the Application 
+Create a new virtual environment folder
+
+    python3 -m venv venv
+Activate Virtual Environment 
+
+    source venv/bin/activate
+
+4.Set-up Database
+
+    python3 setup-db.py
+
+5.Run the Application (Launches the Flask Server)
+
+python3 run.py
+
+6.Access the Application 
         Open your web browser and navigate to:
 
         Home page:
@@ -45,7 +55,6 @@ Installation Steps:
         http://127.0.0.1:5000/create-recipe 
 
         View more details for recipe:    http://127.0.0.1:5000/recipe/1 
-
 
 Ethical Considerations:
 
