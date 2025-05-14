@@ -30,3 +30,9 @@ def load_user(user_id):
 
 # This should come LAST
 from app import routes, models
+
+__all__ = [
+    routes,
+    models,
+    myapp_obj
+]
