@@ -42,3 +42,12 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     recipe_id = db.Column(db.String(32), nullable=False)
     username = db.Column(db.String(32), nullable=False)
+
+class Rating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
+    value = db.Column(db.Integer, nullable=False)  # 1 to 5
+
+    user = db.relationship('User', backref='ratings')
+    recipe = db.relationship('Recipe', backref='ratings')
