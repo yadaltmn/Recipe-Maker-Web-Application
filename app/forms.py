@@ -1,13 +1,11 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Email
-
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')  # matches form.remember_me
     submit = SubmitField('Login')
-
 
 class PostForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -26,8 +24,9 @@ class RecipeForm(FlaskForm):
     instructions = StringField('Instructions', validators=[DataRequired()])
     submit = SubmitField("Create Recipe")
 
-
 class CommentForm(FlaskForm):
     content = StringField('Comment', validators=[DataRequired()])
     submit = SubmitField("Submit Comment")
 
+class DeleteForm(FlaskForm):
+    submit = SubmitField('Delete')

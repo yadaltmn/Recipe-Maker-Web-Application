@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf import CSRFProtect
 import os
 
 # Create app
@@ -15,6 +16,7 @@ myapp_obj.config.from_mapping(
 
 # Initialize extensions
 db = SQLAlchemy(myapp_obj)
+csrf = CSRFProtect(myapp_obj)
 
 login_manager = LoginManager()
 login_manager.init_app(myapp_obj)

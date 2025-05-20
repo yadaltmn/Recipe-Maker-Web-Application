@@ -1,3 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crave Cove – Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="crave-bg">
+  <!-- Navbar -->
+  <nav class="nav-bar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Crave Cove Logo" class="logo-img">
+      <span class="brand-title">Crave Cove</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/recipes">Recipes</a>
+      <a href="/favorites">Favorites</a>
+      <a href="/profile">Profile</a>
+    </div>
+  </nav>
 <h1>Recipe</h1>
 
   <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
@@ -10,14 +31,20 @@
     {% if current_user.is_authenticated and recipe.username == current_user.username %}
       <!-- Only show delete button if logged-in user is the recipe creator -->
       <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
+        {{ delete_form.hidden_tag() }}
+
         <button type="submit">Delete</button>
       </form>
+       <!---Edit button-->
+       <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="edit-btn" style="display:inline;">
+        Edit
+      </a>
     {% endif %}
   </div>
   <div class="comment-box">
     <h3>Leave a Comment</h3>
     <form method="POST">
-      <!-- CSRF token if using Flask-WTF -->
+      <!-- CSRF token-->
       {{ form.hidden_tag() }}
       <!-- Content input field -->
       <p>{{ form.content.label }}<br>{{ form.content() }}</p>

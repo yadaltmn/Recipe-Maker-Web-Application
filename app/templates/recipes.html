@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>Recipes - Crave Cove</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+ {% if current_user.is_authenticated %}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+  {% endif %}
 </head>
 <body class="crave-bg">
   <!-- Navbar -->
@@ -44,12 +47,28 @@
           </div>
 
           {% if current_user.is_authenticated and recipe.username == current_user.username %}
-            <!-- Only show delete button if logged-in user is the recipe creator -->
+            <!-- Only show delete & edit button if logged-in user is the recipe creator -->
             <div style="margin-top: 8px;">
-              <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
+              <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST" style="display:inline;">
+                {{ delete_form.hidden_tag() }}
                 <button type="submit">Delete</button>
               </form>
+              <!-- Edit button as a link -->
+              <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="edit-btn" style="display:inline;">
+                Edit
+              </a>
             </div>
+          {% endif %}
+
+          {% if current_user.is_authenticated %}
+            <!-- Heart Button -->
+            <button class="heart-btn" data-recipe-id="{{ recipe.id }}" aria-label="Toggle Favorite">
+              {% if recipe in current_user.favorite_recipes %}
+                ❤️
+              {% else %}
+                🤍
+              {% endif %}
+            </button>
           {% endif %}
         </div>
       {% endfor %}
@@ -57,5 +76,33 @@
       <p class="no-recipes-msg">No recipes found.</p>
     {% endif %}
   </div>
+
+  <!-- JavaScript to handle Heart Clicks -->
+  <script>
+    document.querySelectorAll('.heart-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const recipeId = button.getAttribute('data-recipe-id');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        fetch(`/favorite/${recipeId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(csrfToken && {'X-CSRFToken': csrfToken})
+          },
+          credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'favorited') {
+            button.textContent = '❤️';
+          } else {
+            button.textContent = '🤍';
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      });
+    });
+  </script>
 </body>
 </html>

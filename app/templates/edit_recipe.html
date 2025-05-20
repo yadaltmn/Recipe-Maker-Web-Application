@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crave Cove – Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="crave-bg">
+  <!-- Navbar -->
+  <nav class="nav-bar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Crave Cove Logo" class="logo-img">
+      <span class="brand-title">Crave Cove</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/recipes">Recipes</a>
+      <a href="/favorites">Favorites</a>
+      <a href="/profile">Profile</a>
+    </div>
+  </nav>
+  <h1>Edit Recipe</h1>
+
+  <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+  
+      <div style="margin-bottom: 10px;">
+        {{ form.title.label }}<br>
+        {{ form.title(size=40) }}
+        {% for error in form.title.errors %}
+          <span style="color:  #1e3a8a;">{{ error }}</span>
+        {% endfor %}
+      </div>
+  
+      <div style="margin-bottom: 10px;">
+        {{ form.description.label }}<br>
+        {{ form.description(rows=3, cols=40) }}
+        {% for error in form.description.errors %}
+          <span style="color:  #1e3a8a;">{{ error }}</span>
+        {% endfor %}
+      </div>
+  
+      <div style="margin-bottom: 10px;">
+        {{ form.ingredients.label }}<br>
+        {{ form.ingredients(rows=3, cols=40) }}
+        {% for error in form.ingredients.errors %}
+          <span style="color:  #1e3a8a;">{{ error }}</span>
+        {% endfor %}
+      </div>
+  
+      <div style="margin-bottom: 10px;">
+        {{ form.instructions.label }}<br>
+        {{ form.instructions(rows=4, cols=40) }}
+        {% for error in form.instructions.errors %}
+          <span style="color:  #1e3a8a;">{{ error }}</span>
+        {% endfor %}
+      </div>
+  
+      <button type="submit">Save Changes</button>
+      <a href="{{ url_for('recipes') }}">Cancel</a>
+    </form>
+  
+    {% if current_user.is_authenticated and recipe.username == current_user.username %}
+      <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST" style="margin-top:10px;">
+        {{ delete_form.hidden_tag() }}
+        <button type="submit" style="background: #1e3a8a; color:white;">Delete</button>
+      </form>
+    {% endif %}
+  </div>
+  

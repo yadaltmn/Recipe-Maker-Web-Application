@@ -1,12 +1,13 @@
 from app import myapp_obj, db
 from flask import render_template, redirect, url_for, flash
-from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm, CommentForm
+from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm, CommentForm, DeleteForm
 from app.models import User, Post, Recipe, Comment
 
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from flask import abort
+from flask import jsonify
 
 from flask import abort  # Import abort to handle unauthorized deletes
 # from <X> import <Y>
@@ -18,7 +19,6 @@ def main():
 @myapp_obj.route("/accounts")
 @login_required
 def users():
-    # user = 'Chloe Knott', 'chloeknott@sjsu.edu'
     users = User.query.all()
     return render_template("accounts.html", users=users)
     #header =  "<h2>My User Accounts</h2>"
@@ -35,16 +35,12 @@ def login():
 
         if user and check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember_me.data)
-            flash(f'Welcome, {user.username}!', 'success')  # ✅ moved inside
-            return redirect(url_for('home'))  # replace with your actual home route name
+            flash(f'Welcome, {user.username}!', 'success')  
+            return redirect(url_for('home')) 
         else:
             flash('Invalid username or password.', 'danger')
 
     return render_template("login.html", form=form)
-
-
-    # What is render template returning?
-    #return str(type(render_template("login.html", form=form)))
 
 @myapp_obj.route("/registration", methods=["GET", "POST"])
 def registration():
@@ -58,7 +54,7 @@ def registration():
         db.session.commit()
         
         login_user(new_user)  # Auto-login after registration
-        flash(f'Welcome, {new_user.username}!', 'success')  # moved inside block
+        flash(f'Welcome, {new_user.username}!', 'success')
         return redirect(url_for('home'))  # Redirect to homepage
     
     return render_template("registration.html", form=form)
@@ -78,10 +74,12 @@ def createPost():
         print("MOOOO MOOO")
     return render_template("post.html", form=form, posts=posts)
 
+
 @myapp_obj.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for("login"))
+
 
 # Route for creating a new recipe
 @myapp_obj.route("/create-recipe", methods=['GET', 'POST'])
@@ -101,22 +99,22 @@ def create_recipe():
         db.session.add(recipe)  # Add the new recipe to the database session
         db.session.commit()  # Commit/save the new recipe to the database
         flash('Recipe created successfully!', 'success')  # Show a success message to user
-        return redirect(url_for('main'))  # Redirect to homepage after creation
+        return redirect(url_for('recipes'))  # Redirect to homepage after creation
 
     # If GET request or form not valid, render the create recipe page again
     return render_template("create_recipe.html", form=form)
 
+
 @myapp_obj.route("/recipes")
 def recipes():  
     all_recipes = Recipe.query.all()
-    return render_template("recipes.html", recipes=all_recipes)
+    return render_template("recipes.html", recipes=all_recipes, delete_form=DeleteForm())
 
 
 @myapp_obj.route('/delete-recipe/<int:recipe_id>', methods=['POST'])
 @login_required
 def delete_recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)  # Get the recipe or 404 error if not found
-
     # Check if the current user owns the recipe
     if recipe.username != current_user.username:
         abort(403)  # Forbidden error if not the owner
@@ -124,7 +122,32 @@ def delete_recipe(recipe_id):
     db.session.delete(recipe)  # Delete the recipe
     db.session.commit()  # Save the change to the database
     flash('Recipe has been deleted.', 'info')  # Show a message
-    return redirect(url_for('main'))  # Redirect to homepage after deletion
+    return redirect(url_for('recipes', delete_form=DeleteForm()))  # Redirect to recipes page after deletion
+
+
+@myapp_obj.route('/edit-recipe/<int:recipe_id>', methods=['GET', 'POST'])
+@login_required
+def edit_recipe(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)  # Get the recipe or 404 error if not found
+    # Check if the current user owns the recipe
+    if recipe.username != current_user.username:
+        abort(403)  # Forbidden error if not the owner
+    form = RecipeForm(obj=recipe)
+    delete_form = DeleteForm() 
+
+    if form.validate_on_submit():
+        # Update recipe fields from form data
+        recipe.title = form.title.data
+        recipe.description = form.description.data
+        recipe.ingredients = form.ingredients.data
+        recipe.instructions = form.instructions.data
+
+        db.session.commit()  # Save the changes to the database
+        flash('Recipe has been updated.', 'success')
+        return redirect(url_for('recipes', delete_form=DeleteForm()))  # Redirect to recipes page after editing
+
+    return render_template('edit_recipe.html', form=form, recipe=recipe, delete_form=DeleteForm())
+
 
 # Route for searching recipes by title or ingredient
 @myapp_obj.route('/search', methods=['GET'])
@@ -141,12 +164,36 @@ def search():
     # Reuse recipes.html to display results
     return render_template("recipes.html", recipes=results)
 
+
+# Route to view favorited recipes
+@myapp_obj.route('/favorites', methods=['GET'])
+@login_required
+def favorites():  
+    # Get only the current user's favorited recipes
+    favorite_recipes = current_user.favorite_recipes
+    return render_template("favorites.html", favorites=favorite_recipes)
+
+
+@myapp_obj.route('/favorite/<int:recipe_id>', methods=['POST'])
+@login_required
+def favorite_recipe(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    if recipe in current_user.favorite_recipes:
+        current_user.favorite_recipes.remove(recipe)
+        db.session.commit()
+        return jsonify({'status': 'unfavorited'})
+    else:
+        current_user.favorite_recipes.append(recipe)
+        db.session.commit()
+        return jsonify({'status': 'favorited'})
+
+
+
 # Route to view a recipe's details and submit comments
 @myapp_obj.route("/recipe/<int:recipe_id>", methods=["GET", "POST"])
 def recipe_detail(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)  # Fetch the recipe or show 404
     form = CommentForm()  # Create a comment form instance
-
     # When user submits a comment
     if form.validate_on_submit():
         comment = Comment(
@@ -156,10 +203,23 @@ def recipe_detail(recipe_id):
         )
         db.session.add(comment)
         db.session.commit()
-        return redirect(url_for("recipe_detail", recipe_id=recipe.id))  # Refresh the page
+        return redirect(url_for("recipe_detail", recipe_id=recipe.id, delete_form=DeleteForm()))  # Refresh the page
 
     comments = Comment.query.filter_by(recipe_id=recipe.id).all()  # Load all comments for this recipe
-    return render_template("recipe_detail.html", recipe=recipe, comments=comments, form=form)
+    return render_template("recipe_detail.html", recipe=recipe, comments=comments, form=form, delete_form=DeleteForm())
+
+
+#Route for viewing your profile
+@myapp_obj.route("/profile")
+@login_required
+def profile_view():  
+    #Get the current user's recipes
+    user_recipes= Recipe.query.filter_by(username=current_user.username).all()
+    
+    #Get user details from the database
+    user = User.query.get(current_user.id)
+    return render_template("profile.html", user=user, recipes=user_recipes)
+
 
 # Route for editing the currently logged-in user's profile
 @myapp_obj.route("/edit-profile", methods=["GET", "POST"])
@@ -181,6 +241,7 @@ def edit_profile():
 
     return render_template("edit_profile.html", form=form)  # Show the form again
 
+
 @myapp_obj.route("/test-logo")
 def test_logo():
     return render_template("test_logo.html")
@@ -190,8 +251,5 @@ def test_logo():
 def home():
     return render_template("homepage.html", user=current_user)
 
-# @myapp_obj.route("/showall")
-# def posts():
-#     post = Post.query.all()
-#     return render_template("post.html", post = post)
+
 

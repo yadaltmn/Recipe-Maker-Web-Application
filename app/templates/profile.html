@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Profile Page/title>
+  <meta charset="UTF-8" />
+  <title>Recipes - Crave Cove</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body class="crave-bg">
+  <!-- Navbar -->
+  <nav class="nav-bar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Crave Cove Logo" class="logo-img">
+      <span class="brand-title">Crave Cove</span>
+    </div>
+    
+    {% if current_user.is_authenticated %}
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/recipes">Recipes</a>
+        <a href="/favorites">Favorites</a>
+      </div>
+    </nav>
+
+    {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('registration') }}">Create new account</a>
+    {% endif %}
+</body>
+
+<meta charset="UTF-8">
+  <title>Profile Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      margin: 0;
+      padding: 0;
+    }
+    .profile-container {
+      max-width: 400px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      padding: 2rem;
+      text-align: center;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 3px solid #1e3a8a;
+    }
+    .profile-username {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1e3a8a;
+      margin-bottom: 0.5rem;
+    }
+    .profile-bio {
+      color: #555;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+    .profile-links a {
+      display: inline-block;
+      margin: 0 10px;
+      padding: 0.5rem 1rem;
+      background: #1e3a8a;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+    .profile-links a:hover {
+      background: #3b82f6;
+    }
+    .profilePhoto-img {
+        width: 50;
+        height: 50px;
+        object-fit: cover;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+  </style>
+
+  <div class="profile-container">
+    <!-- Profile Image -->
+
+    <img src="{{ url_for('static', filename='images/profilePhoto.png') }}" alt="Profile Photo" class="profilePhoto-img">
+
+    <!-- Username -->
+    <div class="profile-username">{{ current_user.username if current_user.is_authenticated else "Guest" }}</div>
+
+    <!-- Bio -->
+    <div class="profile-bio">
+      Food lover. Recipe creator. Always looking for new flavors to try!
+    </div>
+
+    <!-- Profile Links -->
+    <div class="profile-links">
+      <a href="#">Edit Profile</a>
+      <a href="#">Logout</a>
+    </div>
+  </div>
+</body>
+</html>
