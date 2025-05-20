@@ -1,14 +1,15 @@
 from app import myapp_obj, db
+from flask_login import logout_user
 from flask import render_template, redirect, url_for, flash
 from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm, CommentForm, DeleteForm
-from app.models import User, Post, Recipe, Comment
+from app.models import User, Post, Recipe, Comment, Rating
 
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from flask import abort
 from flask import jsonify
-
+from flask import request
 from flask import abort  # Import abort to handle unauthorized deletes
 # from <X> import <Y>
 
@@ -250,6 +251,36 @@ def test_logo():
 @myapp_obj.route("/")
 def home():
     return render_template("homepage.html", user=current_user)
+
+
+# Recipe rating route
+@myapp_obj.route('/rate-recipe/<int:recipe_id>', methods=['POST'])
+@login_required
+def rate_recipe(recipe_id):
+    value = int(request.form.get('rating', 0))
+    if value < 1 or value > 5:
+        flash('Invalid rating.', 'danger')
+        return redirect(url_for('recipe_detail', recipe_id=recipe_id))
+
+    rating = Rating.query.filter_by(
+        user_id=current_user.id,
+        recipe_id=recipe_id
+    ).first()
+
+    if rating:
+        rating.value = value
+    else:
+        rating = Rating(
+            user_id=current_user.id,
+            recipe_id=recipe_id,
+            value=value
+        )
+        db.session.add(rating)
+    
+    db.session.commit()
+    flash('Rating submitted!', 'success')
+    return redirect(url_for('recipe_detail', recipe_id=recipe_id))
+
 
 
 

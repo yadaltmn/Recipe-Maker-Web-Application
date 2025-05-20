@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Crave Cove – Login</title>
+  <title>Crave Cove – Recipe Details</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body class="crave-bg">
@@ -17,9 +17,13 @@
       <a href="/recipes">Recipes</a>
       <a href="/favorites">Favorites</a>
       <a href="/profile">Profile</a>
+      {% if current_user.is_authenticated %}
+      <a href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
     </div>
   </nav>
-<h1>Recipe</h1>
+
+  <h1>Recipe</h1>
 
   <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
     <h2>{{ recipe.title }}</h2>
@@ -32,15 +36,33 @@
       <!-- Only show delete button if logged-in user is the recipe creator -->
       <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
         {{ delete_form.hidden_tag() }}
-
         <button type="submit">Delete</button>
       </form>
-       <!---Edit button-->
-       <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="edit-btn" style="display:inline;">
+      <!---Edit button-->
+      <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="edit-btn" style="display:inline;">
         Edit
       </a>
     {% endif %}
+    
+    <!-- Calculate average rating -->
+    {% set total_ratings = recipe.ratings|map(attribute='value')|sum %}
+    {% set num_ratings = recipe.ratings|length %}
+    {% set avg = (total_ratings / num_ratings) if num_ratings > 0 else 0 %}
+
+    <!-- Display average rating -->
+    <p>
+      Average Rating:
+      {% for i in range(1, 6) %}
+        {% if i <= avg|round(0, 'floor') %}
+          ★
+        {% else %}
+          ☆
+        {% endif %}
+      {% endfor %}
+      ({{ num_ratings }} ratings)
+    </p>
   </div>
+
   <div class="comment-box">
     <h3>Leave a Comment</h3>
     <form method="POST">
@@ -52,6 +74,24 @@
       <p>{{ form.submit() }}</p>
     </form>
   </div>
+
   {% for comment in comments %}
   <p>{{ comment.username }}: {{ comment.content }}</p>
   {% endfor %}
+
+  <!-- Rating Form -->
+  {% if current_user.is_authenticated %}
+    {% set user_rating = recipe.ratings | selectattr('user_id', 'equalto', current_user.id) | first %}
+    <form action="{{ url_for('rate_recipe', recipe_id=recipe.id) }}" method="POST" style="margin-bottom: 1rem;">
+      {{ form.hidden_tag() }}
+      <label>Rate this recipe:</label>
+      {% for i in range(1, 6) %}
+        <input type="radio" name="rating" value="{{ i }}"
+          {% if user_rating and user_rating.value == i %}checked{% endif %}>
+        {{ i }}
+      {% endfor %}
+      <button type="submit">Submit Rating</button>
+    </form>
+  {% endif %}
+</body>
+</html>
