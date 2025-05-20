@@ -1,10 +1,8 @@
 from app import myapp_obj, db
-from flask_login import logout_user
+from flask_login import login_user, logout_user, login_required, current_user
 from flask import render_template, redirect, url_for, flash
-from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm, CommentForm, DeleteForm
+from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm, CommentForm, DeleteForm, EditProfileForm
 from app.models import User, Post, Recipe, Comment, Rating
-
-from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from flask import abort
@@ -222,7 +220,7 @@ def recipe_detail(recipe_id):
 #Route for viewing your profile
 @myapp_obj.route("/profile")
 @login_required
-def profile_view():  
+def profile():  
     #Get the current user's recipes
     user_recipes= Recipe.query.filter_by(username=current_user.username).all()
     
@@ -235,14 +233,15 @@ def profile_view():
 @myapp_obj.route("/edit-profile", methods=["GET", "POST"])
 @login_required
 def edit_profile():
-    # Pre-fill the form with the current user's data
-    form = RegistrationForm(obj=current_user)
+    
+    form = EditProfileForm(obj=current_user)
 
     # If the user submits the form with valid data
     if form.validate_on_submit():
         # Update user fields
         current_user.username = form.username.data
-        current_user.email = form.email.data
+        #current_user.email = form.email.data
+        current_user.bio = form.bio.data
         current_user.password = generate_password_hash(form.password.data)  # Securely hash new password
 
         db.session.commit()  # Save changes to the database

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length, Email
+from wtforms.validators import DataRequired, Email, Optional, Length
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -30,3 +31,10 @@ class CommentForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     submit = SubmitField('Delete')
+
+class EditProfileForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=32)])
+    #email = StringField('Email', validators=[Optional(), Email()])
+    bio = TextAreaField('Bio', validators=[Optional(), Length(max=255)]) 
+    password = PasswordField('New Password', validators=[Optional(), Length(min=6)])
+    submit = SubmitField('Update Profile')

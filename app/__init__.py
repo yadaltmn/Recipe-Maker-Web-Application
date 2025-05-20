@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 import os
+from flask_migrate import Migrate
 
 # Create app
 myapp_obj = Flask(__name__, static_folder='../static')
@@ -17,6 +18,7 @@ myapp_obj.config.from_mapping(
 # Initialize extensions
 db = SQLAlchemy(myapp_obj)
 csrf = CSRFProtect(myapp_obj)
+migrate = Migrate(myapp_obj, db)
 
 login_manager = LoginManager()
 login_manager.init_app(myapp_obj)

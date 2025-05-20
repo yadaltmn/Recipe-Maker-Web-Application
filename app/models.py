@@ -13,6 +13,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(32))
     password = db.Column(db.String(128), nullable=False)
     favorite_recipes = db.relationship('Recipe', secondary=favorites, backref='favorited_by')
+    bio = db.Column(db.String(255), default="")
     
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
