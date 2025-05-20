@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Crave Cove – Sign Up</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body class="crave-bg">
+      <!-- Top Navbar -->
+      <nav class="nav-bar">
+        <div class="nav-logo">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Crave Cove Logo" class="logo-img">
+          <span class="brand-title">Crave Cove</span>
+        </div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/recipes">Recipes</a>
+          <a href="/favorites">Favorites</a>
+          <a href="/profile">Profile</a>
+          <a href="{{ url_for('chat') }}">Chat</a>
+          {% if current_user.is_authenticated %}
+          <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+        </div>
+      </nav>
+    <title>Recipe Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 0;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 2rem;
+        }
+        #chat-box {
+            height: 350px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #f9fafb;
+            margin-bottom: 1.5rem;
+        }
+        .chat-message {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-username {
+            font-size: 0.9rem;
+            color: #1e3a8a;
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+        }
+        .chat-bubble {
+            display: inline-block;
+            padding: 0.7rem 1.2rem;
+            border-radius: 18px;
+            background: #e0e7ff;
+            color: #1e293b;
+            max-width: 75%;
+            word-break: break-word;
+        }
+        .chat-message.self .chat-bubble {
+            background: #1e3a8a;
+            color: #fff;
+            align-self: flex-end;
+        }
+        .chat-message.self {
+            align-items: flex-end;
+        }
+        .chat-message.other {
+            align-items: flex-start;
+        }
+        #chat-input-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+        #message-input {
+            flex: 1;
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 1rem;
+        }
+        #send-btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            background: #1e3a8a;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #send-btn:hover {
+            background: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h2>Recipe Chat</h2>
+        <div id="chat-box"></div>
+        <div id="chat-input-row">
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button id="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        // Replace with the current user's username from Flask
+        const currentUsername = "{{ current_user.username }}";
+        const socket = io();
+
+        socket.on('message', (data) => {
+            addMessage(data.username, data.message);
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const msg = input.value.trim();
+            if (msg !== "") {
+                socket.emit('message', {message: msg});
+                input.value = "";
+            }
+        }
+
+        function addMessage(username, message) {
+            const chatBox = document.getElementById('chat-box');
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('chat-message');
+            msgDiv.classList.add(username === currentUsername ? 'self' : 'other');
+
+            const userDiv = document.createElement('div');
+            userDiv.classList.add('chat-username');
+            userDiv.textContent = username;
+
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.classList.add('chat-bubble');
+            bubbleDiv.textContent = message;
+
+            msgDiv.appendChild(userDiv);
+            msgDiv.appendChild(bubbleDiv);
+            chatBox.appendChild(msgDiv);
+
+            // Auto-scroll
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Allow Enter key to send messages
+        document.getElementById('message-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,4 @@
-from app import myapp_obj
-
-app = myapp_obj  # Flask will detect this as the app
+from app import myapp_obj, socketio
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    socketio.run(myapp_obj, debug=True, host="0.0.0.0")

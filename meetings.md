@@ -12,7 +12,8 @@ Summary: Most of milestone one was completed before the meeting ended. Chloe sti
 - Team updates (15min or less): 
 - No updates since the last meeting
 Summary: Most of milestone two is yet to be completed. We will focus in implementing each one of our requirements and update the readme file to include detailed instructions on how to run our project. Chloe will add the ethical considerations to the README file.  
-### 2023-10-15 at 10:30
-<meeting template would go here>
-<only fill in template once you had the meeting>
-
+### 2025-05-17 at 10:30
+- Attendance: Jada and Chloe 
+- Team updates (15min or less): 
+- No updates since the last meeting
+Summary: Most of milestone three is complete. We will focus on adding our special addtional requirement for a HP on milestone3.

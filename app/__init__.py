@@ -4,8 +4,8 @@ from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 import os
 from flask_migrate import Migrate
+from flask_socketio import SocketIO
 
-# Create app
 myapp_obj = Flask(__name__, static_folder='../static')
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -19,24 +19,19 @@ myapp_obj.config.from_mapping(
 db = SQLAlchemy(myapp_obj)
 csrf = CSRFProtect(myapp_obj)
 migrate = Migrate(myapp_obj, db)
-
+socketio = SocketIO(myapp_obj, cors_allowed_origins="*")  # Initialize SocketIO first
 login_manager = LoginManager()
+
+# Configure login manager
 login_manager.init_app(myapp_obj)
 login_manager.login_view = 'login'
 
-# Import AFTER defining login_manager
+# Import models AFTER extensions but BEFORE routes
 from app.models import User
 
-# This is REQUIRED for Flask-Login to work
+# User loader must come after User model import
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# This should come LAST
-from app import routes, models
-
-__all__ = [
-    routes,
-    models,
-    myapp_obj
-]
+from app import routes

@@ -1,4 +1,4 @@
-from app import myapp_obj, db
+from app import myapp_obj, db, socketio
 from flask_login import login_user, logout_user, login_required, current_user
 from flask import render_template, redirect, url_for, flash
 from app.forms import LoginForm, RegistrationForm, PostForm, RecipeForm, CommentForm, DeleteForm, EditProfileForm
@@ -9,6 +9,7 @@ from flask import abort
 from flask import jsonify
 from flask import request
 from flask import abort  # Import abort to handle unauthorized deletes
+from flask_socketio import send, emit
 # from <X> import <Y>
 
 @myapp_obj.route("/")
@@ -290,5 +291,13 @@ def rate_recipe(recipe_id):
     return redirect(url_for('recipe_detail', recipe_id=recipe_id))
 
 
+@socketio.on('message')
+def handle_message(data):
+    send({'username': current_user.username, 'message': data['message']}, broadcast=True)
+
+@myapp_obj.route('/chat') 
+@login_required
+def chat():
+    return render_template('chat.html')
 
 
