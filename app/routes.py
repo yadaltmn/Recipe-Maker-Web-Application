@@ -106,10 +106,19 @@ def create_recipe():
     return render_template("create_recipe.html", form=form)
 
 
+#View all recipes
 @myapp_obj.route("/recipes")
-def recipes():  
-    all_recipes = Recipe.query.all()
-    return render_template("recipes.html", recipes=all_recipes, delete_form=DeleteForm())
+def recipes():
+    query = request.args.get('q', '').strip()
+    if query:
+        # Filter by title or ingredients, case-insensitive
+        filtered_recipes = Recipe.query.filter(
+            (Recipe.title.ilike(f"%{query}%")) |
+            (Recipe.ingredients.ilike(f"%{query}%"))
+        ).all()
+    else:
+        filtered_recipes = Recipe.query.all()
+    return render_template("recipes.html", recipes=filtered_recipes, delete_form=DeleteForm())
 
 
 @myapp_obj.route('/delete-recipe/<int:recipe_id>', methods=['POST'])

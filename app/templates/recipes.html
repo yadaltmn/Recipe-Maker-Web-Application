@@ -32,6 +32,12 @@
     <a href="/create-recipe" class="create-recipe-btn">+ Create Recipe</a>
   </div>
 
+  <!--Recipe Search-->
+  <form method="GET" action="{{ url_for('recipes') }}" class="filter-form" style="margin-bottom: 1rem;">
+    <input type="text" name="q" placeholder="Search by title or ingredient..." value="{{ request.args.get('q', '') }}">
+    <button type="submit">Search</button>
+  </form>
+
   <!-- Recipes List -->
   <div class="recipe-grid">
     {% if recipes %}
