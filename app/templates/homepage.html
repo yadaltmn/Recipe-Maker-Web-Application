@@ -1,18 +1,112 @@
-<div class="nav-links">
-    <a href="/">Home</a>
-    <a href="/recipes">Recipes</a>
-    <a href="/favorites">Favorites</a>
-    <a href="/profile">Profile</a>
-    <a href="{{ url_for('chat') }}">Chat</a>
-    {% if current_user.is_authenticated %}
-    <a href="{{ url_for('logout') }}">Logout</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Crave Cove – Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #fff8dc, #e0f7fa);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-  {% endif %}
-    
-    {% if current_user.is_authenticated %}
-      <span class="nav-user">Hello, {{ current_user.username }}!</span>
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1e3a8a;
+      padding: 10px 20px;
+      color: white;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      width: 40px;
+      margin-right: 10px;
+    }
+
+    .brand-title {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: yellow;
+    }
+
+    .nav-user {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .main-content h1 {
+      font-size: 3rem;
+      color: #1e3a8a;
+    }
+
+    .main-content p {
+      font-size: 1.3rem;
+      color: #333;
+      margin-bottom: 2rem;
+    }
+
+    .home-links a {
+      margin: 0 1rem;
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      background-color: #1e3a8a;
+      padding: 12px 28px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .home-links a:hover {
+      background-color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Crave Cove Logo" class="logo-img">
+      <span class="brand-title">Crave Cove</span>
+    </div>
+    <div class="nav-user">
+      Hello, {{ current_user.username if current_user.is_authenticated else "Guest" }}!
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>Welcome to Crave Cove</h1>
+    <p>Your place to create, explore, and share amazing recipes.</p>
+    {% if not current_user.is_authenticated %}
+    <div class="home-links">
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('registration') }}">Create Account</a>
+    </div>
     {% else %}
-      <a href="/login">Login</a>
+    <div class="home-links">
+      <a href="{{ url_for('recipes') }}">View Recipes</a>
+      <a href="{{ url_for('profile') }}">My Profile</a>
+    </div>
     {% endif %}
   </div>
-  
+</body>
+</html>
